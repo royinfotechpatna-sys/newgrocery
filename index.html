@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopEasy Grocery | Online Shopping</title>
+<style>
+/* Beginner-friendly CSS: colors, spacing, borders, flex and grid */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f5f8f4; color: #26352a; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.topbar { background: #176b3a; color: white; padding: 9px 5%; text-align: center; font-size: 13px; }
+header { background: white; border-bottom: 1px solid #e0e8df; padding: 15px 5%; display: flex; align-items: center; gap: 20px; justify-content: space-between; flex-wrap: wrap; }
+.logo { font-size: 24px; font-weight: bold; color: #176b3a; cursor: pointer; }
+.search { display: flex; flex: 1; max-width: 560px; min-width: 190px; }
+.search input { flex: 1; border: 1px solid #cbd8cc; border-radius: 6px 0 0 6px; padding: 11px; min-width: 0; }
+.search button { border: 0; background: #176b3a; color: white; padding: 0 16px; border-radius: 0 6px 6px 0; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.btn { border: 0; border-radius: 6px; padding: 10px 14px; font-weight: bold; }
+.green { background: #176b3a; color: white; }
+.light { background: #eaf4eb; color: #176b3a; }
+.outline { border: 1px solid #176b3a; color: #176b3a; background: white; }
+nav { background: white; padding: 0 5%; border-bottom: 1px solid #e0e8df; display: flex; gap: 6px; flex-wrap: wrap; }
+nav button { background: white; border: 0; padding: 13px 14px; color: #344438; }
+nav button:hover { background: #eaf4eb; color: #176b3a; }
+main { max-width: 1200px; margin: 0 auto; padding: 22px 18px 40px; min-height: 70vh; }
+.page { display: none; }
+.page.active { display: block; }
+h1, h2, h3 { margin-top: 0; }
+h2 { color: #1b5f35; }
+.muted { color: #718075; font-size: 13px; }
+.hero { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 34px; border-radius: 12px; background: #e4f4e5; }
+.hero h1 { font-size: clamp(27px, 4vw, 42px); color: #175d32; margin-bottom: 10px; }
+.hero p { max-width: 500px; line-height: 1.6; }
+.hero-art { font-size: 85px; padding: 20px; }
+.perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 28px; }
+.perk { background: white; border: 1px solid #e1e9e0; padding: 16px; border-radius: 8px; }
+.perk strong { display: block; margin: 7px 0; }
+.section-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin: 24px 0 14px; }
+.section-head h2 { margin: 0; }
+.categories { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.category { background: white; border: 1px solid #e1e9e0; border-radius: 8px; padding: 18px 8px; text-align: center; cursor: pointer; }
+.category:hover, .product:hover { border-color: #8bc69a; }
+.category .emoji { font-size: 34px; display: block; margin-bottom: 8px; }
+.products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+.product { background: white; border: 1px solid #e1e9e0; border-radius: 9px; padding: 13px; display: flex; flex-direction: column; }
+.product-art { height: 110px; border-radius: 7px; background: #f0f7ef; display: flex; align-items: center; justify-content: center; font-size: 58px; margin-bottom: 12px; }
+.product h3 { font-size: 15px; margin-bottom: 7px; }
+.product .desc { font-size: 12px; color: #718075; margin-bottom: 8px; }
+.price-row { display: flex; align-items: center; gap: 7px; margin: auto 0 10px; }
+.price { font-weight: bold; font-size: 18px; color: #176b3a; }
+.old-price { text-decoration: line-through; color: #89958b; font-size: 12px; }
+.product button { width: 100%; }
+.panel { background: white; border: 1px solid #e0e8df; border-radius: 9px; padding: 20px; margin-bottom: 16px; }
+.two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+label { display: block; font-size: 13px; font-weight: bold; margin: 12px 0 6px; }
+input, select { width: 100%; border: 1px solid #cbd8cc; border-radius: 5px; padding: 11px; background: white; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.full { grid-column: 1 / -1; }
+.auth-wrap { max-width: 480px; margin: 12px auto; }
+.auth-logo { text-align: center; font-size: 30px; font-weight: bold; color: #176b3a; margin-bottom: 12px; }
+.auth-wrap h2, .auth-wrap p { text-align: center; }
+.link-button { background: none; border: 0; color: #176b3a; font-weight: bold; padding: 4px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 540px; }
+th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid #e5ece4; font-size: 14px; }
+th { background: #edf6ed; }
+.qty { display: flex; align-items: center; gap: 8px; }
+.qty button { background: #eaf4eb; color: #176b3a; border: 0; border-radius: 4px; padding: 5px 9px; }
+.summary-row { display: flex; justify-content: space-between; gap: 15px; margin: 12px 0; }
+.total { border-top: 1px solid #dce7dc; padding-top: 12px; font-size: 20px; font-weight: bold; color: #176b3a; }
+.notice { padding: 12px; background: #fff6dc; border-radius: 6px; color: #6c5615; font-size: 13px; margin: 12px 0; }
+.status { display: inline-block; background: #e3f5e6; color: #176b3a; padding: 5px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.empty { text-align: center; padding: 35px 12px; background: white; border: 1px dashed #cbd8cc; border-radius: 8px; }
+.empty .emoji { font-size: 45px; }
+footer { background: #173c27; color: white; padding: 30px 5%; }
+.footer-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; }
+footer p, footer button { color: #d7e6d9; font-size: 13px; line-height: 1.7; }
+footer button { background: none; border: 0; display: block; padding: 3px 0; cursor: pointer; }
+.small-note { font-size: 12px; color: #6e7c71; }
+@media (max-width: 850px) {
+  header { gap: 12px; } .search { order: 3; max-width: none; flex-basis: 100%; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .categories { grid-template-columns: repeat(3, 1fr); }
+  .perks { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  header { padding: 13px; } .logo { font-size: 20px; }
+  nav { padding: 0 8px; } nav button { padding: 10px 8px; font-size: 12px; }
+  main { padding: 14px 10px 28px; }
+  .hero { padding: 22px; } .hero-art { font-size: 48px; padding: 0; }
+  .categories { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="topbar">Fresh groceries delivered to your door • Easy shopping every day</div>
+<header>
+    <div class="logo" onclick="showPage('home')">🛒 ShopEasy</div>
+    <div class="search"><input id="searchInput" placeholder="Search rice, milk, fruits..." onkeydown="if(event.key==='Enter') searchProducts()"><button onclick="searchProducts()">Search</button></div>
+    <div class="header-actions">
+        <button class="btn light" onclick="showPage('account')">👤 <span id="headerUser">Account</span></button>
+        <button class="btn green" onclick="showPage('cart')">🛒 Cart (<span id="cartCount">0</span>)</button>
+    </div>
+</header>
+<nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('categories')">Categories</button>
+    <button onclick="showPage('shop')">Shop All</button>
+    <button onclick="showPage('orders')">My Orders</button>
+    <button onclick="showPage('account')">My Account</button>
+</nav>
+
+<main>
+<section class="page active" id="home">
+    <div class="hero">
+        <div>
+            <p><strong>YOUR NEIGHBOURHOOD GROCERY STORE</strong></p>
+            <h1>Fresh Products.<br>Happy Homes.</h1>
+            <p>Shop everyday essentials, fresh fruits, vegetables, dairy and more — all in one place.</p>
+            <button class="btn green" onclick="showPage('shop')">Start Shopping →</button>
+        </div>
+        <div class="hero-art">🥦 🥑 🍎</div>
+    </div>
+    <div class="perks">
+        <div class="perk">🚚<strong>Fast Delivery</strong><span class="muted">At your doorstep</span></div>
+        <div class="perk">🥬<strong>Fresh Quality</strong><span class="muted">Carefully selected</span></div>
+        <div class="perk">💳<strong>Easy Payments</strong><span class="muted">Choose at checkout</span></div>
+        <div class="perk">☎️<strong>Helpful Support</strong><span class="muted">We're here to help</span></div>
+    </div>
+    <div class="section-head"><h2>Shop by Category</h2><button class="link-button" onclick="showPage('categories')">View all →</button></div>
+    <div class="categories" id="homeCategories"></div>
+    <div class="section-head"><h2>Popular Products</h2><button class="link-button" onclick="showPage('shop')">View all →</button></div>
+    <div class="products" id="homeProducts"></div>
+</section>
+
+<section class="page" id="categories">
+    <h2>Shop by Category</h2><p class="muted">Choose a category to find your everyday essentials.</p>
+    <div class="categories" id="allCategories"></div>
+    <div class="section-head"><h2 id="categoryTitle">All Products</h2><button class="link-button" onclick="showPage('shop')">Show all products</button></div>
+    <div class="products" id="categoryProducts"></div>
+</section>
+
+<section class="page" id="shop">
+    <div class="section-head"><div><h2>Shop All Products</h2><p class="muted">Browse our grocery collection.</p></div>
+      <select id="sortProducts" style="width:auto" onchange="renderShop()"><option value="popular">Sort: Popular</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="name">Name: A to Z</option></select>
+    </div>
+    <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <select id="filterCategory" style="max-width:260px" onchange="renderShop()"><option value="All">All Categories</option></select>
+      <input id="shopSearch" placeholder="Search products..." style="max-width:350px" oninput="renderShop()">
+    </div>
+    <div class="products" id="shopProducts"></div>
+</section>
+
+<section class="page" id="login">
+    <div class="auth-wrap panel">
+        <div class="auth-logo">🛒 ShopEasy</div><h2>Welcome Back!</h2><p class="muted">Login to continue shopping.</p>
+        <form onsubmit="loginUser(event)">
+            <label>Email Address</label><input type="email" id="loginEmail" required placeholder="you@example.com">
+            <label>Password</label><input type="password" id="loginPassword" required placeholder="Enter password">
+            <button class="btn green" style="width:100%;margin-top:18px">Login</button>
+        </form>
+        <p>Don't have an account? <button class="link-button" onclick="showPage('signup')">Create account</button></p>
+        <p><button class="link-button" onclick="showPage('home')">← Continue as guest</button></p>
+        <div class="notice">Demo login only. Do not use a real password; this practice app stores account data in this browser.</div>
+    </div>
+</section>
+
+<section class="page" id="signup">
+    <div class="auth-wrap panel">
+        <div class="auth-logo">🛒 ShopEasy</div><h2>Create Your Account</h2><p class="muted">Join us for a simpler grocery shopping experience.</p>
+        <form onsubmit="signupUser(event)">
+            <label>Full Name</label><input id="signupName" required placeholder="Enter your full name">
+            <label>Email Address</label><input type="email" id="signupEmail" required placeholder="you@example.com">
+            <label>Mobile Number</label><input id="signupMobile" type="tel" required placeholder="10-digit mobile number">
+            <label>Password</label><input id="signupPassword" type="password" required minlength="4" placeholder="Create a password">
+            <label>Confirm Password</label><input id="signupConfirm" type="password" required minlength="4" placeholder="Enter password again">
+            <button class="btn green" style="width:100%;margin-top:18px">Create Account</button>
+        </form>
+        <p>Already registered? <button class="link-button" onclick="showPage('login')">Login</button></p>
+        <div class="notice">Demo only: this form does not create a secure online account. A real store needs a backend/authentication service.</div>
+    </div>
+</section>
+
+<section class="page" id="cart">
+    <h2>My Shopping Cart</h2><p class="muted">Review your items before checkout.</p>
+    <div id="cartContent"></div>
+</section>
+
+<section class="page" id="checkout">
+    <h2>Checkout</h2><p class="muted">Delivery details and order confirmation.</p>
+    <div class="two-col">
+      <div class="panel">
+        <h3>Delivery Address</h3>
+        <form id="checkoutForm" onsubmit="placeOrder(event)">
+          <label>Full Name</label><input id="deliveryName" required>
+          <label>Mobile Number</label><input id="deliveryMobile" type="tel" required>
+          <label>House / Street / Area</label><input id="deliveryAddress" required placeholder="House number, street, area">
+          <div class="form-grid">
+            <div><label>City</label><input id="deliveryCity" required></div>
+            <div><label>PIN Code</label><input id="deliveryPin" required pattern="[0-9]{6}" title="Enter a 6 digit PIN code"></div>
+          </div>
+          <label>Payment Method</label><select id="paymentMethod"><option>Cash on Delivery</option><option>UPI (demo only)</option><option>Card (demo only)</option></select>
+          <div class="notice">Online payments are not connected in this demo. Select Cash on Delivery to place a sample order.</div>
+          <button class="btn green" style="width:100%">Place Order</button>
+        </form>
+      </div>
+      <div class="panel"><h3>Order Summary</h3><div id="checkoutSummary"></div></div>
+    </div>
+</section>
+
+<section class="page" id="orders">
+    <h2>My Orders</h2><p class="muted">View your order history and status.</p><div id="ordersContent"></div>
+</section>
+
+<section class="page" id="account">
+    <h2>My Account</h2><div id="accountContent"></div>
+</section>
+
+<section class="page" id="productDetail">
+    <div id="productDetailContent"></div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div><h2 style="color:white">🛒 ShopEasy Grocery</h2><p>Your everyday grocery shopping made simple. Fresh essentials, fair prices and convenient ordering.</p></div>
+    <div><h3>Quick Links</h3><button onclick="showPage('shop')">Shop All</button><button onclick="showPage('categories')">Categories</button><button onclick="showPage('orders')">My Orders</button></div>
+    <div><h3>Customer Help</h3><p>Delivery & Returns</p><p>Contact: support@shopeasy.example</p><button onclick="showPage('account')">My Account</button></div>
+  </div>
+  <p style="text-align:center;border-top:1px solid #40634a;padding-top:15px;margin-top:20px">© 2026 ShopEasy Grocery • Practice Website</p>
+</footer>
+
+<script>
+const categories = [
+ {name:"Fruits",emoji:"🍎"},{name:"Vegetables",emoji:"🥦"},{name:"Dairy",emoji:"🥛"},
+ {name:"Grains & Rice",emoji:"🍚"},{name:"Snacks",emoji:"🍪"},{name:"Beverages",emoji:"🧃"},
+ {name:"Personal Care",emoji:"🧴"},{name:"Household",emoji:"🧹"}
+];
+const initialProducts = [
+ {id:1,name:"Fresh Apples",category:"Fruits",emoji:"🍎",desc:"Fresh red apples • 1 kg",price:160,old:190},
+ {id:2,name:"Banana",category:"Fruits",emoji:"🍌",desc:"Sweet bananas • 1 dozen",price:60,old:70},
+ {id:3,name:"Tomato",category:"Vegetables",emoji:"🍅",desc:"Fresh tomatoes • 1 kg",price:35,old:45},
+ {id:4,name:"Potato",category:"Vegetables",emoji:"🥔",desc:"Farm potatoes • 1 kg",price:30,old:40},
+ {id:5,name:"Full Cream Milk",category:"Dairy",emoji:"🥛",desc:"Fresh milk • 1 litre",price:66,old:70},
+ {id:6,name:"Butter",category:"Dairy",emoji:"🧈",desc:"Creamy butter • 100 g",price:58,old:65},
+ {id:7,name:"Basmati Rice",category:"Grains & Rice",emoji:"🍚",desc:"Premium rice • 1 kg",price:95,old:110},
+ {id:8,name:"Wheat Atta",category:"Grains & Rice",emoji:"🌾",desc:"Whole wheat flour • 5 kg",price:220,old:245},
+ {id:9,name:"Cookies",category:"Snacks",emoji:"🍪",desc:"Crunchy cookies • 200 g",price:40,old:50},
+ {id:10,name:"Potato Chips",category:"Snacks",emoji:"🥔",desc:"Crispy salted chips • pack",price:20,old:25},
+ {id:11,name:"Orange Juice",category:"Beverages",emoji:"🧃",desc:"Refreshing juice • 1 litre",price:110,old:125},
+ {id:12,name:"Mineral Water",category:"Beverages",emoji:"💧",desc:"Packaged drinking water • 1 litre",price:20,old:20},
+ {id:13,name:"Bath Soap",category:"Personal Care",emoji:"🧼",desc:"Gentle daily soap • 100 g",price:35,old:42},
+ {id:14,name:"Shampoo",category:"Personal Care",emoji:"🧴",desc:"Daily care shampoo • 180 ml",price:145,old:165},
+ {id:15,name:"Dishwash Liquid",category:"Household",emoji:"🧽",desc:"Lemon dishwash • 500 ml",price:99,old:115},
+ {id:16,name:"Laundry Detergent",category:"Household",emoji:"🫧",desc:"Fresh laundry powder • 1 kg",price:120,old:140}
+];
+const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
+let products=read("shopEasyProducts",initialProducts);
+let cart=read("shopEasyCart",[]);
+let orders=read("shopEasyOrders",[]);
+let users=read("shopEasyUsers",[]);
+let currentUser=read("shopEasyCurrentUser",null);
+let selectedCategory="All";
+const money=n=>"₹"+Number(n||0).toFixed(2);
+function save(){localStorage.setItem("shopEasyProducts",JSON.stringify(products));localStorage.setItem("shopEasyCart",JSON.stringify(cart));localStorage.setItem("shopEasyOrders",JSON.stringify(orders));localStorage.setItem("shopEasyUsers",JSON.stringify(users));localStorage.setItem("shopEasyCurrentUser",JSON.stringify(currentUser));}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function showPage(id){
+ const protectedPages=["orders","account","checkout"];
+ if(protectedPages.includes(id)&&!currentUser){alert("Please login or create an account first.");id="login";}
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));
+ renderAll();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderCategories(targetId){
+ document.getElementById(targetId).innerHTML=categories.map(c=>`<div class="category" onclick="openCategory('${c.name}')"><span class="emoji">${c.emoji}</span><strong>${c.name}</strong></div>`).join("");
+}
+function productCard(p){return `<div class="product"><div class="product-art" onclick="viewProduct(${p.id})">${p.emoji}</div><h3>${esc(p.name)}</h3><div class="desc">${esc(p.desc)}</div><div class="price-row"><span class="price">${money(p.price)}</span><span class="old-price">${money(p.old)}</span></div><button class="btn green" onclick="addToCart(${p.id})">Add to Cart</button><button class="link-button" onclick="viewProduct(${p.id})">View details</button></div>`;}
+function renderHome(){
+ renderCategories("homeCategories");
+ document.getElementById("homeProducts").innerHTML=products.slice(0,8).map(productCard).join("");
+}
+function openCategory(name){selectedCategory=name;document.getElementById("categoryTitle").textContent=name;document.getElementById("categoryProducts").innerHTML=products.filter(p=>p.category===name).map(productCard).join("")||'<div class="empty">No products in this category yet.</div>';showPage("categories");}
+function renderCategoryPage(){
+ renderCategories("allCategories");
+ document.getElementById("categoryTitle").textContent=selectedCategory==="All"?"All Products":selectedCategory;
+ const list=selectedCategory==="All"?products:products.filter(p=>p.category===selectedCategory);
+ document.getElementById("categoryProducts").innerHTML=list.map(productCard).join("")||'<div class="empty">No products found.</div>';
+}
+function renderShop(){
+ const filter=document.getElementById("filterCategory").value;
+ const q=document.getElementById("shopSearch").value.toLowerCase();
+ const sort=document.getElementById("sortProducts").value;
+ let list=products.filter(p=>(filter==="All"||p.category===filter)&&(p.name+" "+p.category+" "+p.desc).toLowerCase().includes(q));
+ if(sort==="low")list.sort((a,b)=>a.price-b.price);
+ if(sort==="high")list.sort((a,b)=>b.price-a.price);
+ if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
+ document.getElementById("shopProducts").innerHTML=list.map(productCard).join("")||'<div class="empty">No products matched your search.</div>';
+}
+function searchProducts(){document.getElementById("shopSearch").value=document.getElementById("searchInput").value;showPage("shop");}
+function viewProduct(id){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ document.getElementById("productDetailContent").innerHTML=`<button class="link-button" onclick="showPage('shop')">← Back to Shop</button><div class="two-col" style="margin-top:15px"><div class="product-art" style="height:300px;font-size:130px">${p.emoji}</div><div class="panel"><p class="muted">${esc(p.category)}</p><h2>${esc(p.name)}</h2><p>${esc(p.desc)}</p><div class="price-row"><span class="price" style="font-size:26px">${money(p.price)}</span><span class="old-price">${money(p.old)}</span></div><p class="muted">Fresh everyday essential from ShopEasy Grocery.</p><button class="btn green" onclick="addToCart(${p.id})">Add to Cart</button><button class="btn outline" onclick="buyNow(${p.id})">Buy Now</button><hr><p>✓ Quality checked</p><p>✓ Convenient home delivery</p><p>✓ Customer support available</p></div></div>`;
+ showPage("productDetail");
+}
+function addToCart(id){const p=products.find(x=>x.id===id);if(!p)return;const item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id:p.id,qty:1});save();renderAll();alert(p.name+" added to cart.");}
+function buyNow(id){addToCart(id);showPage("cart");}
+function cartItems(){return cart.map(c=>{const p=products.find(x=>x.id===c.id);return p?{...p,qty:c.qty}:null}).filter(Boolean);}
+function cartTotal(){return cartItems().reduce((s,p)=>s+p.price*p.qty,0);}
+function changeQty(id,delta){const item=cart.find(x=>x.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.id!==id);save();renderAll();}
+function removeCart(id){cart=cart.filter(x=>x.id!==id);save();renderAll();}
+function renderCart(){
+ const items=cartItems(), el=document.getElementById("cartContent");
+ if(!items.length){el.innerHTML='<div class="empty"><div class="emoji">🛒</div><h3>Your cart is empty</h3><p class="muted">Add some groceries to get started.</p><button class="btn green" onclick="showPage(\'shop\')">Browse Products</button></div>';return;}
+ el.innerHTML=`<div class="two-col"><div class="panel"><div class="table-wrap"><table><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr></thead><tbody>${items.map(p=>`<tr><td>${p.emoji} ${esc(p.name)}</td><td>${money(p.price)}</td><td><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button>${p.qty}<button onclick="changeQty(${p.id},1)">+</button></div></td><td>${money(p.price*p.qty)}</td><td><button class="link-button" onclick="removeCart(${p.id})">Remove</button></td></tr>`).join("")}</tbody></table></div><button class="btn outline" onclick="showPage('shop')">Continue Shopping</button></div><div class="panel"><h3>Price Details</h3><div class="summary-row"><span>Subtotal</span><strong>${money(cartTotal())}</strong></div><div class="summary-row"><span>Delivery</span><strong>${cartTotal()>=499?"FREE":"₹30.00"}</strong></div><div class="summary-row total"><span>Total</span><strong>${money(cartTotal()+(cartTotal()>=499?0:30))}</strong></div><p class="muted">Free delivery on orders of ₹499 or more.</p><button class="btn green" style="width:100%" onclick="startCheckout()">Proceed to Checkout</button></div></div>`;
+}
+function startCheckout(){
+ if(!currentUser){alert("Please login to continue checkout.");showPage("login");return;}
+ document.getElementById("deliveryName").value=currentUser.name||"";
+ document.getElementById("deliveryMobile").value=currentUser.mobile||"";
+ renderCheckoutSummary();showPage("checkout");
+}
+function renderCheckoutSummary(){
+ const sub=cartTotal(),delivery=sub>=499?0:30;
+ document.getElementById("checkoutSummary").innerHTML=cartItems().map(p=>`<div class="summary-row"><span>${p.emoji} ${esc(p.name)} × ${p.qty}</span><strong>${money(p.price*p.qty)}</strong></div>`).join("")+`<hr><div class="summary-row"><span>Subtotal</span><strong>${money(sub)}</strong></div><div class="summary-row"><span>Delivery</span><strong>${delivery===0?"FREE":money(delivery)}</strong></div><div class="summary-row total"><span>Total</span><strong>${money(sub+delivery)}</strong></div>`;
+}
+function placeOrder(event){
+ event.preventDefault();if(!currentUser){showPage("login");return;}if(!cartItems().length){alert("Your cart is empty.");showPage("shop");return;}
+ const sub=cartTotal(),delivery=sub>=499?0:30;
+ const order={id:"SE"+Date.now().toString().slice(-8),date:new Date().toLocaleString(),userEmail:currentUser.email,items:cartItems().map(p=>({id:p.id,name:p.name,emoji:p.emoji,price:p.price,qty:p.qty})),subtotal:sub,delivery,total:sub+delivery,payment:document.getElementById("paymentMethod").value,status:"Order Placed",address:{name:document.getElementById("deliveryName").value,mobile:document.getElementById("deliveryMobile").value,street:document.getElementById("deliveryAddress").value,city:document.getElementById("deliveryCity").value,pin:document.getElementById("deliveryPin").value}};
+ orders.unshift(order);cart=[];save();alert("Demo order placed successfully! Order ID: "+order.id);showPage("orders");
+}
+function loginUser(event){
+ event.preventDefault();const email=document.getElementById("loginEmail").value.trim().toLowerCase(),password=document.getElementById("loginPassword").value;
+ const user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){alert("Account not found or password is incorrect. For demo, create an account first.");return;}
+ currentUser={name:user.name,email:user.email,mobile:user.mobile};save();alert("Login successful. Welcome "+user.name+"!");showPage("home");
+}
+function signupUser(event){
+ event.preventDefault();const name=document.getElementById("signupName").value.trim(),email=document.getElementById("signupEmail").value.trim().toLowerCase(),mobile=document.getElementById("signupMobile").value.trim(),password=document.getElementById("signupPassword").value,confirmPass=document.getElementById("signupConfirm").value;
+ if(password!==confirmPass){alert("Passwords do not match.");return;}
+ if(users.some(u=>u.email===email)){alert("This email already has a demo account. Please login.");return;}
+ users.push({name,email,mobile,password});currentUser={name,email,mobile};save();alert("Demo account created. Welcome "+name+"!");showPage("home");
+}
+function logout(){currentUser=null;save();alert("You have logged out.");showPage("home");}
+function renderOrders(){
+ const mine=currentUser?orders.filter(o=>o.userEmail===currentUser.email):[];
+ document.getElementById("ordersContent").innerHTML=mine.length?mine.map(o=>`<div class="panel"><div class="section-head"><div><h3>Order #${esc(o.id)}</h3><p class="muted">${esc(o.date)}</p></div><span class="status">${esc(o.status)}</span></div>${o.items.map(i=>`<p>${i.emoji} ${esc(i.name)} × ${i.qty} — ${money(i.price*i.qty)}</p>`).join("")}<hr><div class="summary-row"><span>Payment</span><strong>${esc(o.payment)}</strong></div><div class="summary-row"><span>Order Total</span><strong>${money(o.total)}</strong></div><p class="muted">Deliver to: ${esc(o.address.street)}, ${esc(o.address.city)} - ${esc(o.address.pin)}</p></div>`).join(""):'<div class="empty"><div class="emoji">📦</div><h3>No orders yet</h3><p class="muted">Your placed orders will appear here.</p><button class="btn green" onclick="showPage(\'shop\')">Shop Now</button></div>';
+}
+function renderAccount(){
+ const el=document.getElementById("accountContent");
+ if(!currentUser){el.innerHTML=`<div class="panel auth-wrap"><h3>Welcome to ShopEasy</h3><p class="muted">Login to see your profile and orders.</p><button class="btn green" onclick="showPage('login')">Login</button> <button class="btn outline" onclick="showPage('signup')">Create Account</button></div>`;return;}
+ el.innerHTML=`<div class="two-col"><div class="panel"><h3>Customer Profile</h3><p><strong>Name:</strong> ${esc(currentUser.name)}</p><p><strong>Email:</strong> ${esc(currentUser.email)}</p><p><strong>Mobile:</strong> ${esc(currentUser.mobile)}</p><button class="btn outline" onclick="showPage('orders')">View My Orders</button> <button class="btn green" onclick="logout()">Logout</button></div><div class="panel"><h3>Shopping with ShopEasy</h3><p>Browse categories, add items to your cart and place a demo order.</p><button class="btn green" onclick="showPage('shop')">Continue Shopping</button></div></div><div class="notice">This profile belongs only to this browser demo. It is not a secure online customer account.</div>`;
+}
+function renderHeader(){
+ document.getElementById("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);
+ document.getElementById("headerUser").textContent=currentUser?currentUser.name.split(" ")[0]:"Account";
+}
+function renderAll(){
+ renderHeader();renderHome();renderCategoryPage();renderShop();renderCart();renderCheckoutSummary();renderOrders();renderAccount();
+}
+function init(){
+ const filter=document.getElementById("filterCategory");
+ filter.innerHTML='<option value="All">All Categories</option>'+categories.map(c=>`<option>${c.name}</option>`).join("");
+ renderAll();
+}
+init();
+</script>
+</body>
+</html>
